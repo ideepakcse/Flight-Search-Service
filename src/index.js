@@ -16,7 +16,6 @@ app.use('/api',apiRoutes);
 app.listen(ServerConfig.PORT, async () => {
     console.log(`Server started at ${ServerConfig.PORT}`);
     //db.sequelize.sync({alter: true});
-
 });
 
 

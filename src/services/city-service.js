@@ -1,5 +1,8 @@
-const { CityRepository }  =require('../repositories');
+const { StatusCodes } = require('http-status-codes');
 
+const AppError = require('../utils/errors/app-error');
+
+const { CityRepository }  =require('../repositories');
 
 const cityRepository=new CityRepository();
 async function createCity(data)
@@ -22,15 +25,15 @@ async function createCity(data)
 
 async function getCity(id)
 {
-    try{
-        const city= await cityRepository.get(id);
+    try {
+        const city = await cityRepository.get(id);
         return city;
-    }
-    catch(error){
+    } 
+    catch(error) {
         if(error.statusCode == StatusCodes.NOT_FOUND) {
             throw new AppError('The city you requested is not present', error.statusCode);
         }
-        throw new AppError('Cannot fetch data of the requested city', StatusCodes.INTERNAL_SERVER_ERROR);
+        throw new AppError('Cannot fetch data of all the cities', StatusCodes.INTERNAL_SERVER_ERROR);
     }
 }
 
