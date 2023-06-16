@@ -1,7 +1,8 @@
 const CrudRepository = require('./crud-repository');
 
 const { Flight } = require('../models');
-
+const db = require('../models');
+const { addRowLockOnFlights } = require('./queries');
 
 class FlightRepository extends CrudRepository {
     constructor() {
@@ -13,6 +14,24 @@ class FlightRepository extends CrudRepository {
             order: sort
         });
         return response;
+    }
+
+    async updateRemainingSeats(data,flightId) {
+        const transaction = await db.sequelize.transaction();
+        try {
+            await db.sequelize.query(addRowLockOnFlights(flightId));
+            const response = await Flight.update(data, {
+                where: {
+                    id: flightId
+                }
+            })
+            await transaction.commit();
+            return response;
+        } catch(error) {
+            await transaction.rollback();
+            throw error;
+        }
+       
     }
 }
 
