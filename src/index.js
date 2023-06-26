@@ -12,6 +12,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
 app.use('/api',apiRoutes);
+app.use('/flightsService/api',apiRoutes);
 
 app.listen(ServerConfig.PORT, async () => {
     console.log(`Server started at ${ServerConfig.PORT}`);
